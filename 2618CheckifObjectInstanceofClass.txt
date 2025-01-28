@@ -1,0 +1,12 @@
+This is done in JS, uses concepts of prototypes and inherting and shit
+
+var checkIfInstanceOf = function(obj, classFunction) {
+    // the obj can be null starting out, but also once it becomes null that means the prototype chain is broken and there is no path from the classFunction and obj
+    while(obj != null) {
+        if(obj.constructor === classFunction){
+            return true; // we found the link
+        }
+        obj = Object.getPrototypeOf(obj); // get next obj that cur obj inherits from
+    }
+    return false; // it was never found
+};

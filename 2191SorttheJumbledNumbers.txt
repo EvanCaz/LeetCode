@@ -1,0 +1,15 @@
+In python3
+
+class Solution:
+    def sortJumbled(self, mapping: List[int], nums: List[int]) -> List[int]:
+        return sorted(nums, key=lambda n: int(''.join(map(lambda d: str(mapping[int(d)]), str(n)))))
+    ## this took a lot of understanding and shit to follow
+    ## this converst each number in nums into a string, then 
+    ## int(d) converts each character into the string back into a integer
+    ## then mapping[int(d)] gets the correct mapping info from the array
+    ## then str(mapping[int(d)]) converst that back into an string
+    ## then int(''join...) to create a new integer that has been mapped and sorted
+    ## this is not actually modifiying the values in nums, but just mapping and sorrting them with key functon
+    ## therefor sorted() only uses transofmred values for sorting but returns original
+                
+        
