@@ -1,0 +1,78 @@
+This was my solution, it did not work for every test case interestingly and im not sure why:
+
+class Solution {
+    public List<List<Integer>> findWinners(int[][] matches) {
+        Map<Integer, Integer> losers = new HashMap<>();
+        Set<Integer> allWinners = new HashSet<>();
+        Set<Integer> oneLost = new HashSet<>();
+        for(int i = 0; i < matches.length; i++){
+            allWinners.add(matches[i][0]);
+
+            losers.put(matches[i][1], losers.getOrDefault(matches[i][1], 0) + 1);
+        }
+
+        for(Map.Entry<Integer, Integer> entry: losers.entrySet()) {
+
+            int player = entry.getKey();
+            int losses = entry.getValue();
+
+            if(allWinners.contains(player)){
+                allWinners.remove(player);
+            }
+            if(losses == 1){
+                oneLost.add(player);
+            }
+        }
+
+        List<List<Integer>> result = new ArrayList<>();
+        result.add(new ArrayList<>(allWinners)); 
+        result.add(new ArrayList<>(oneLost));  
+
+        for (Map.Entry<Integer, Integer> entry : losers.entrySet()) {
+            System.out.println("Key: " + entry.getKey() + ", Value: " + entry.getValue());
+        }
+
+        return result;
+    }
+}
+
+
+This is the most popular solution:
+
+
+class Solution {
+    public List<List<Integer>> findWinners(int[][] matches) {
+        int[] losses = new int[100001]; // just above the size of test cases given, use index as the player and the value as the number of losess, -1 is zero losses
+        for(int i = 0; i < matches.length; i++){
+            int win = matches[i][0];
+            int loss = matches[i][1];
+
+            if(losses[win] == 0){ // if the index, which is player, has not been counted yet but is a winner, set to zero losses
+                losses[win] = -1; // 
+            }
+
+            if(losses[loss] == -1) { // if the index, which is player, was previously at zero losses, set to 1 loss
+                losses[loss] = 1;
+            } else {
+                losses[loss]++; // if they are anythign else, increment because now thye are abnove the things we track
+            }
+        }
+
+        List<Integer> zeroLoss = new ArrayList<>();
+        List<Integer> oneLoss = new ArrayList<>();
+
+        List<List<Integer>> result = new ArrayList<>();
+
+        for (int i = 0; i < losses.length; i++) { // uses a lot of time and resources
+            if (losses[i] == -1) {
+                zeroLoss.add(i);
+            } else if (losses[i] == 1) {
+                oneLoss.add(i);
+            }
+        }
+
+        result.add(zeroLoss);
+        result.add(oneLoss);
+        return result;
+    }
+}
