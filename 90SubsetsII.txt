@@ -1,0 +1,21 @@
+pyhon3 solution
+
+
+class Solution:
+    def subsetsWithDup(self, nums: List[int]) -> List[List[int]]:
+        ## similar to subsets one, where each element has two choices, you either inlucde it or you dont. 
+        ## but this time we want to avoid applying that logic to repeated elements
+        result = [] ## this is a list of lists cuz duh
+        nums.sort()
+        def backTrack(curIndex, nextSub):
+            result.append(list(nextSub)) ## add current subset
+            for i in range(curIndex, len(nums)): ## iterates over the remaining elements because of pruning and logic below
+            ## if the current index and preivous are euqal and its not the first occurcne in this recursion leve, we skip to prevcent duplicate subsets
+                if i > curIndex and nums[i] == nums[i-1]: ## logic to skip, if the currenet element is equal to last element and i is greater than start
+                    continue
+                nextSub.append(nums[i]) ## the next unique subset, inlucde current element
+                backTrack(i + 1, nextSub) ## recurse starting at next index in nums and pass the finished unique subSet
+                nextSub.pop() ## pruning, undo last choice so we can find all unique usbsets with the current start index
+        backTrack(0, []) ## pass empty subset cuz that is a property of subsets and start at nums[0]
+        ## this is basicaly depth first search
+        return result
